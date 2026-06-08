@@ -1,0 +1,32 @@
+Marie Tremblay
+Senior Mechanical Design Engineer
+Location: Montréal, QC, Canada
+Languages: French (native), English (professional)
+
+SUMMARY
+Senior mechanical design engineer with 9 years of experience in aerospace
+structures and systems. Specialist in mechanical design, CATIA V5, and GD&T,
+delivering primary and secondary structures for commercial and business jets.
+
+EXPERIENCE
+Pratt & Whitney Canada — Senior Mechanical Design Engineer (2019–present)
+  - Led mechanical design of engine accessory components in CATIA.
+  - Applied GD&T and AS9100 quality standards across the design lifecycle.
+  - Performed finite element analysis (ANSYS) and DFMEA on critical parts.
+
+Bombardier Aerospace — Mechanical Design Engineer (2016–2019)
+  - Designed composite and metallic aerostructure assemblies.
+  - Used Teamcenter PLM and SAE/ISO 9001 standards.
+
+EDUCATION
+M.Eng. Mechanical Engineering, McGill University
+B.Eng. Mechanical Engineering, Polytechnique Montréal — graduated summa cum laude
+
+DISTINCTIONS
+  - Co-inventor on 2 granted patents in turbomachinery cooling.
+  - Published first author, peer-reviewed paper at SAE AeroTech.
+  - Invited speaker at a CSME panel on design for manufacturability.
+
+OTHER
+  - Open to new opportunities; current contract ending this year.
+  - Willing to travel for design reviews.

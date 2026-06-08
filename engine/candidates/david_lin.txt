@@ -1,0 +1,24 @@
+David Lin
+Mechanical Engineer
+Location: Toronto, ON, Canada
+Languages: English (native)
+
+SUMMARY
+Mechanical engineer with 4 years of experience in automotive component design.
+Strong in CAD modeling and finite element analysis. Looking to grow into
+aerospace structures.
+
+EXPERIENCE
+Magna International — Mechanical Engineer (2021–present)
+  - Designed automotive seating mechanisms using SolidWorks.
+  - Ran finite element analysis (ANSYS) for durability validation.
+  - Supported ISO 9001 quality processes.
+
+Linamar — Junior Design Engineer (2020–2021)
+  - Assisted on powertrain bracket design and tolerancing.
+
+EDUCATION
+B.Eng. Mechanical Engineering, University of Waterloo
+
+OTHER
+  - Interested in relocating for the right aerospace opportunity.

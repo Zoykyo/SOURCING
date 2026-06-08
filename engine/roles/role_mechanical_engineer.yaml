@@ -1,0 +1,55 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Role Profile — one file per requisition.
+# In Phase 1 this gets auto-populated from a Zoho Recruit Job Opening.
+# ──────────────────────────────────────────────────────────────────────────────
+
+id: ME-2026-001
+title: "Senior Mechanical Design Engineer"
+client: "Confidential Aerospace OEM"
+seniority: senior                 # junior | intermediate | senior | lead | principal
+
+region: "Montréal, QC"
+work_mode: hybrid                 # onsite | hybrid | remote
+relocation_offered: false
+
+# Must-have skills act as a GATE. Missing any flags the candidate "below bar".
+must_have_skills:
+  - "mechanical design"
+  - "CATIA"
+  - "GD&T"
+  - "aerospace"
+
+nice_to_have_skills:
+  - "ANSYS"
+  - "finite element analysis"
+  - "composites"
+  - "DFMEA"
+  - "Teamcenter"
+
+# Key OEMs / relevant companies (Professional Profile category).
+target_employers:
+  - "Bombardier"
+  - "Pratt & Whitney"
+  - "Airbus"
+  - "Bell"
+  - "CAE"
+  - "Safran"
+
+# Domain standards (Skills category).
+standards:
+  - "AS9100"
+  - "SAE"
+  - "ISO 9001"
+
+languages:
+  - {name: "French", level: "professional"}
+  - {name: "English", level: "professional"}
+
+# Optional: override the model's default category weights for this role.
+# Omit to use model.yaml defaults. Must sum to 1.0 if provided.
+# category_weights:
+#   professional_profile: 0.25
+#   skills_qualifications: 0.35
+#   credibility_distinction: 0.10
+#   availability_retention: 0.20
+#   mobility: 0.10

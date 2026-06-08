@@ -1,0 +1,269 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# SOURCING — Multi-Criteria Scoring Model  (canonical 5 categories × 5 sub-criteria)
+#
+# This file IS the model. Edit `weight` values to retune scoring.
+#   • Category weights (the 5 `weight:` under each category) must sum to 1.0
+#   • Sub-criteria weights within each category must sum to 1.0
+#   • Effective weight of a sub-criterion = category weight × sub weight
+#
+# `scorer:` tells the engine how to compute the sub-score from available data.
+#   • a name  -> implemented now (Phase 0, from resume text)
+#   • null    -> not yet scorable; scored neutral (`no_data_score`) until the
+#                data source in `needs:` is connected (LinkedIn / Zoho / recruiter)
+# ──────────────────────────────────────────────────────────────────────────────
+
+version: 0.2
+
+categories:
+
+  # ── 1 ────────────────────────────────────────────────────────────────────────
+  professional_profile:
+    label: "1. Professional Profile & Career Trajectory"
+    focus: "Career path, progression, experience relevance, professional history."
+    weight: 0.22
+    subcriteria:
+      - id: employers_key_oem
+        label: "Employers – Key OEM: list & relevance of companies worked at"
+        weight: 0.3
+        scorer: employers_relevance
+      - id: relevant_roles
+        label: "Relevant roles & experiences; current title vs. what we're proposing"
+        weight: 0.25
+        scorer: role_relevance
+      - id: seniority
+        label: "Seniority level vs. what's being sought"
+        weight: 0.2
+        scorer: seniority_match
+      - id: career_progression
+        label: "Career progression analysis (lateral, hierarchical, interests) vs. what we can offer"
+        weight: 0.15
+        scorer: null
+        needs: "structured work-history timeline (LinkedIn / Zoho)"
+      - id: subdomain_match
+        label: "Sub-domain match"
+        weight: 0.1
+        scorer: null
+        needs: "domain/sub-domain taxonomy + enrichment"
+
+  # ── 2 ────────────────────────────────────────────────────────────────────────
+  skills_qualifications:
+    label: "2. Skills, Expertise & Qualifications"
+    focus: "Capability, technical fit, credentials, match with the opportunity and company."
+    weight: 0.3
+    subcriteria:
+      - id: key_competencies
+        label: "Key competencies and skills (must-have vs. nice-to-have)"
+        weight: 0.4
+        scorer: key_competencies
+      - id: knowledge_standards
+        label: "Key knowledge and standards (SAE, ISO, AS9100…)"
+        weight: 0.2
+        scorer: standards_match
+      - id: education
+        label: "Education, continuing education (courses)"
+        weight: 0.15
+        scorer: education
+      - id: language_proficiency
+        label: "Language proficiency analysis"
+        weight: 0.15
+        scorer: languages_match
+      - id: associations_certs
+        label: "Professional associations, certifications and credentials"
+        weight: 0.1
+        scorer: certifications
+
+  # ── 3 ────────────────────────────────────────────────────────────────────────
+  credibility_distinction:
+    label: "3. Credibility, Reputation & Distinction"
+    focus: "Distinction, excellence, credibility, reputation."
+    weight: 0.13
+    subcriteria:
+      - id: awards_distinctions
+        label: "Awards, distinctions, scholarships, honors, recognitions, alumni"
+        weight: 0.3
+        scorer: awards
+      - id: references_feedback
+        label: "References, feedback"
+        weight: 0.2
+        scorer: null
+        needs: "reference checks / recruiter feedback input"
+      - id: demonstrated_authority
+        label: "Demonstrated expertise or domain authority: speaker, panel, trainer, committees"
+        weight: 0.2
+        scorer: authority
+      - id: competition_studentclub
+        label: "Competition: student club"
+        weight: 0.1
+        scorer: competition
+      - id: publications_patents
+        label: "Publications and patents"
+        weight: 0.2
+        scorer: publications
+
+  # ── 4 ────────────────────────────────────────────────────────────────────────
+  availability_retention:
+    label: "4. Availability & Retention Potential"
+    focus: "Likelihood of moving, staying, and being reachable."
+    weight: 0.2
+    subcriteria:
+      - id: interest_kollabtek
+        label: "Interest in Kollabtek, clients & sector companies (subscribed, connected, applied before)"
+        weight: 0.2
+        scorer: null
+        needs: "engagement data (LinkedIn follows/applies, Zoho history)"
+      - id: open_to_work
+        label: "Open to work or probability of being open to work"
+        weight: 0.3
+        scorer: open_to_work
+      - id: contact_analysis
+        label: "Contact analysis (recruiter, Kollabtek team)"
+        weight: 0.1
+        scorer: null
+        needs: "existing relationship / contact-owner data (Zoho)"
+      - id: probability_stay
+        label: "Probabilities to stay at Kollabtek"
+        weight: 0.15
+        scorer: null
+        needs: "retention model on past placements"
+      - id: tenure_windows
+        label: "Tenure windows (current and avg. past)"
+        weight: 0.25
+        scorer: tenure_windows
+
+  # ── 5 ────────────────────────────────────────────────────────────────────────
+  mobility:
+    label: "5. Mobility"
+    focus: "Interest, possibility to relocate and travel."
+    weight: 0.15
+    subcriteria:
+      - id: interest_relocation
+        label: "Interest in relocation"
+        weight: 0.2
+        scorer: interest_relocation
+      - id: willingness_travel
+        label: "Willingness to travel"
+        weight: 0.15
+        scorer: willingness_travel
+      - id: location_proximity
+        label: "Location: proximity to current role"
+        weight: 0.3
+        scorer: location_proximity
+      - id: region_studies_work
+        label: "Region – past and current studies and work"
+        weight: 0.15
+        scorer: null
+        needs: "structured study/work region history (LinkedIn / enrichment)"
+      - id: work_mode
+        label: "Work mode: on-site, hybrid, remote"
+        weight: 0.2
+        scorer: work_mode_fit
+
+
+# ── Seniority bands by years of experience (for the seniority sub-criterion) ────
+seniority_bands:
+  junior:       {min: 0,  max: 3}
+  intermediate: {min: 3,  max: 6}
+  senior:       {min: 6,  max: 12}
+  lead:         {min: 10, max: 18}
+  principal:    {min: 15, max: 99}
+
+
+# ── Keyword lexicons for deterministic (no-LLM) detection (regex, case-insensitive)
+lexicons:
+  awards:
+    - award
+    - distinction
+    - scholarship
+    - honou?r
+    - recognition
+    - magna cum laude
+    - summa cum laude
+    - dean'?s list
+    - alumni
+    - fellow
+  authority:
+    - keynote
+    - speaker
+    - panelist
+    - \bpanel\b
+    - trainer
+    - instructor
+    - committee
+    - chair(person)?
+    - board member
+    - mentor
+  publications:
+    - patent
+    - publication
+    - published
+    - first author
+    - peer.reviewed
+    - journal
+    - conference paper
+  competition:
+    - competition
+    - student club
+    - hackathon
+    - olympiad
+    - contest
+    - formula sae
+    - sae aero
+    - design challenge
+  education:
+    - bachelor
+    - master'?s?
+    - m\.?eng
+    - b\.?eng
+    - m\.?sc
+    - b\.?sc
+    - ph\.?d
+    - doctorate
+    - mba
+    - engineering degree
+    - diploma
+    - polytechnique
+    - university
+  certifications:
+    - p\.?eng
+    - pmp\b
+    - six sigma
+    - lean
+    - iso lead auditor
+    - scrum master
+    - certified
+    - credential
+    - license[d]?
+    - order of engineers
+  open_to_work:
+    - open to work
+    - open to new opportunities
+    - seeking
+    - actively looking
+    - available immediately
+    - contract ending
+    - notice period
+  interest_relocation:
+    - willing to relocate
+    - open to relocation
+    - relocat
+  willingness_travel:
+    - willing to travel
+    - frequent travel
+    - travel.ready
+
+
+# ── Thresholds & flags ─────────────────────────────────────────────────────────
+thresholds:
+  must_have_gate: 1.0          # fraction of must-haves required to clear the gate
+  shortlist_min_score: 60      # below this -> flagged "marginal"
+  wow_min_score: 80            # min total to be Wow-eligible
+
+# "A + B + C = Wow!" — rare high-value combination.
+wow_rule:
+  require_all_must_haves: true
+  require_min_score: true
+  require_distinction: true                # any award/authority/publication signal
+  require_employer_or_standards: true
+
+# Neutral score for a sub-criterion with no data (so absence neither rewards nor punishes).
+no_data_score: 50

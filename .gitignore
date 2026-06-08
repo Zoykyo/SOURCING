@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Generated scoring outputs (regenerable via score.py)
+engine/reports/
+
+# Office temp/lock files
+~$*
+*.tmp
+
+# Local tooling / secrets
+.claude/
+.env
+*.key
+
+# OS
+Thumbs.db
+.DS_Store
