@@ -14,6 +14,7 @@ import unicodedata
 from dataclasses import dataclass
 
 from parse_profile import CandidateProfile
+import reference as ref_lib
 
 _STOPWORDS = {"and", "of", "the", "a", "to", "for", "in", "senior", "junior",
               "lead", "principal", "intermediate"}
@@ -49,6 +50,25 @@ def _crit(score, evidence, provenance="explicit"):
     return {"score": float(score), "evidence": evidence, "provenance": provenance}
 
 
+_CURRENT_RE = re.compile(r"present|current|aujourd|ongoing|to date|–\s*present|-\s*present", re.IGNORECASE)
+
+
+def current_employer_clients(raw_text: str, client_names: list[str]) -> list[str]:
+    """No-poach detection: active-client names appearing on a line marked current
+    (contains 'present'/'current'/etc). Past employers are NOT flagged (they're a
+    relevance boost, not an exclusion). Heuristic — recruiter confirms."""
+    lines = raw_text.splitlines()
+    tn_lines = [(ln, _norm(ln)) for ln in lines]
+    flagged = []
+    for name in client_names:
+        n = _norm(name)
+        for ln, lnn in tn_lines:
+            if n in lnn and _CURRENT_RE.search(ln):
+                flagged.append(name)
+                break
+    return flagged
+
+
 # ── scoring context shared by all sub-scorers ─────────────────────────────────
 
 @dataclass
@@ -64,18 +84,20 @@ class Ctx:
     must_hit: list
     nice_hit: list
     std_hit: list
+    target_employers: list  # role's explicit list UNION sector auto-fill
 
 
 # ── sub-criterion scorers (keyed by the `scorer:` name in model.yaml) ─────────
 
 def employers_relevance(c: Ctx):
-    targets = c.role.get("target_employers", [])
+    targets = c.target_employers
     if not targets:
         return _crit(50, "No target employers defined for role", "no_data")
     hit = _matched(c.tn, targets)
     if hit:
-        return _crit(100, f"Worked at key OEM(s): {', '.join(hit)}")
-    return _crit(40, "No listed key OEM found in profile")
+        shown = ", ".join(hit[:6]) + ("…" if len(hit) > 6 else "")
+        return _crit(100, f"Worked at sector-relevant company/OEM: {shown}")
+    return _crit(40, "No sector-relevant company found in profile")
 
 
 def role_relevance(c: Ctx):
@@ -265,16 +287,22 @@ SCORERS = {
 
 # ── orchestration ─────────────────────────────────────────────────────────────
 
-def score_candidate(cand: CandidateProfile, role: dict, model: dict) -> dict:
+def score_candidate(cand: CandidateProfile, role: dict, model: dict, reference: dict | None = None) -> dict:
     tn = _norm(cand.raw_text)
     lex = model.get("lexicons", {})
     must = role.get("must_have_skills", [])
     nice = role.get("nice_to_have_skills", [])
     stds = role.get("standards", [])
 
+    # Relevance boost: role's explicit target employers UNION the sector's companies.
+    sector = role.get("sector")
+    sector_fill = ref_lib.companies_for_sector(reference, sector)
+    target_employers = list(dict.fromkeys(list(role.get("target_employers", [])) + sector_fill))
+
     ctx = Ctx(cand=cand, role=role, model=model, tn=tn, lex=lex,
               must=must, nice=nice, stds=stds,
-              must_hit=_matched(tn, must), nice_hit=_matched(tn, nice), std_hit=_matched(tn, stds))
+              must_hit=_matched(tn, must), nice_hit=_matched(tn, nice), std_hit=_matched(tn, stds),
+              target_employers=target_employers)
 
     cat_overrides = role.get("category_weights") or {}
     no_data = model["no_data_score"]
@@ -326,11 +354,16 @@ def score_candidate(cand: CandidateProfile, role: dict, model: dict) -> dict:
 
     wow = _wow(model, total, gate_passed, ctx)
 
+    # No-poach: currently employed at an active client (firm-wide).
+    no_poach_hits = current_employer_clients(cand.raw_text, ref_lib.active_client_names(reference))
+    no_poach = {"triggered": bool(no_poach_hits), "companies": no_poach_hits}
+
     all_subs = [r for cat in categories_out.values() for r in cat["subcriteria"].values()]
     explicit = sum(1 for r in all_subs if r["provenance"] == "explicit")
     completeness = explicit / len(all_subs)
 
-    status = ("Below bar — missing must-haves" if not gate_passed
+    status = ("⛔ No-poach — currently at active client" if no_poach["triggered"]
+              else "Below bar — missing must-haves" if not gate_passed
               else "Shortlist" if total >= model["thresholds"]["shortlist_min_score"]
               else "Marginal")
 
@@ -343,6 +376,7 @@ def score_candidate(cand: CandidateProfile, role: dict, model: dict) -> dict:
         "feasibility": feasibility,
         "gate_passed": gate_passed,
         "missing_must_haves": missing_must,
+        "no_poach": no_poach,
         "wow": wow,
         "status": status,
         "data_completeness": round(completeness, 2),
@@ -362,7 +396,7 @@ def _wow(model, total, gate_passed, ctx: Ctx) -> bool:
         if not has_distinction:
             return False
     if r.get("require_employer_or_standards"):
-        emp = bool(_matched(ctx.tn, ctx.role.get("target_employers", [])))
+        emp = bool(_matched(ctx.tn, ctx.target_employers))
         if not (emp or ctx.std_hit):
             return False
     return True

@@ -8,6 +8,11 @@ title: "Senior Mechanical Design Engineer"
 client: "Confidential Aerospace OEM"
 seniority: senior                 # junior | intermediate | senior | lead | principal
 
+# Sector key from engine/reference/target_employers.yaml. When set, the engine
+# auto-fills target_employers with that sector's companies (relevance boost) and
+# enables no-poach checks against active clients.
+sector: aeronautique_espace       # defense | aeronautique_espace | vehicules | ferroviaire | villes_infrastructure
+
 region: "Montréal, QC"
 work_mode: hybrid                 # onsite | hybrid | remote
 relocation_offered: false

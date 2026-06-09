@@ -58,6 +58,22 @@ messy resumes and infer likely-but-unstated attributes, always tagged with
 confidence and marked as inferred. Activated with `--enrich` once
 `ANTHROPIC_API_KEY` is set. The engine runs fully without it.
 
+## Target-employer reference & no-poach
+
+`reference/target_employers.yaml` is Kollabtek's target client/OEM list (by sector,
+province, and `status: client | prospect`). Set a `sector:` on a role and the engine:
+
+- **Relevance boost** — auto-fills the role's target employers with that sector's
+  companies, so candidates who worked at sector-relevant firms score higher
+  (clients and prospects count equally). Scored on domain *relevance*, not prestige.
+- **No-poach** — flags any candidate **currently employed at an active client**
+  (firm-wide, any sector) — status becomes `⛔ No-poach` with a scorecard banner.
+  Past employment at a client is NOT flagged (that's the relevance boost).
+
+Regenerate the reference from an updated deck with the pptx parser, or edit the YAML
+directly. No-poach detection is a heuristic (name on a line marked "present"); the
+recruiter confirms before excluding.
+
 ## Layout
 
 ```
@@ -66,9 +82,11 @@ engine/
   score.py              CLI entry point
   parse_profile.py      file -> structured signals
   scoring.py            multi-criteria scoring engine
+  reference.py          loads target_employers.yaml (sector fill + no-poach)
   enrich.py             optional LLM enrichment (Phase 1 stub)
   report.py             Markdown + Excel output
-  roles/                per-requisition role configs
+  roles/                per-requisition role configs (set `sector:`)
   candidates/           candidate files to score (sample data included)
+  reference/            target-employer / key-OEM reference list
   reports/              generated scorecards & shortlists (output)
 ```

@@ -35,6 +35,7 @@ from parse_profile import parse_candidate
 from scoring import score_candidate
 from report import write_markdown, write_shortlist_xlsx
 import enrich
+import reference as ref_lib
 
 HERE = Path(__file__).parent
 SUPPORTED = {".txt", ".docx", ".pdf"}
@@ -59,12 +60,14 @@ def main(argv=None):
     g.add_argument("--candidate", help="Path to a single candidate file")
     g.add_argument("--candidates-dir", help="Folder of candidate files to rank")
     ap.add_argument("--model", default=str(HERE / "model.yaml"), help="Scoring model YAML")
+    ap.add_argument("--reference", default=str(ref_lib.DEFAULT_PATH), help="Target-employers reference YAML")
     ap.add_argument("--out", default=str(HERE / "reports"), help="Output directory")
     ap.add_argument("--enrich", action="store_true", help="Use LLM enrichment if available")
     args = ap.parse_args(argv)
 
     model = load_yaml(args.model)
     role = load_yaml(args.role)
+    reference = ref_lib.load_reference(args.reference)
     lex = model["lexicons"]
 
     if args.enrich and not enrich.is_available():
@@ -76,11 +79,13 @@ def main(argv=None):
         cand = parse_candidate(path, lex)
         if args.enrich and enrich.is_available():
             cand = enrich.enrich_profile(cand, role)
-        result = score_candidate(cand, role, model)
+        result = score_candidate(cand, role, model, reference)
         results.append(result)
         md = write_markdown(result, role, args.out)
         flag = " 🏆 WOW" if result["wow"] else ""
-        print(f"  {result['total_score']:5.1f}  {result['status']:<28} "
+        if result["no_poach"]["triggered"]:
+            flag += f"  ⛔ NO-POACH ({', '.join(result['no_poach']['companies'])})"
+        print(f"  {result['total_score']:5.1f}  {result['status']:<38} "
               f"{result['candidate']}{flag}")
         print(f"         scorecard: {md}")
 

@@ -20,6 +20,12 @@ def scorecard_markdown(result: dict, role: dict) -> str:
              f"**Data completeness:** {int(result['data_completeness']*100)}%")
     L.append("")
 
+    np = result.get("no_poach", {})
+    if np.get("triggered"):
+        L.append(f"> ⛔ **NO-POACH** — currently at active client: **{', '.join(np['companies'])}**. "
+                 f"Do not pursue without sign-off (don't recruit away from our own clients).")
+        L.append("")
+
     if not result["gate_passed"]:
         L.append(f"> ⚠️ **Missing must-have(s):** {', '.join(result['missing_must_haves'])}")
         L.append("")
