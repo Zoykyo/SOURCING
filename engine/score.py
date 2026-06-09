@@ -70,6 +70,15 @@ def main(argv=None):
     reference = ref_lib.load_reference(args.reference)
     lex = model["lexicons"]
 
+    # Who are we sourcing FOR? Required — drives no-poach. Ask/confirm every search.
+    hiring_client = role.get("hiring_client") or role.get("client")
+    if not hiring_client or "confidential" in str(hiring_client).lower():
+        print(f"⚠️  HIRING CLIENT not set for role '{role.get('id')}'. Set `client:` (or "
+              f"`hiring_client:`) in the role file — it scopes the no-poach rule.\n"
+              f"   Current value: {hiring_client!r}", file=sys.stderr)
+    else:
+        print(f"  Sourcing for client: {hiring_client}  (protected from no-poach)\n")
+
     if args.enrich and not enrich.is_available():
         print("⚠️  --enrich requested but ANTHROPIC_API_KEY not set; running deterministic.",
               file=sys.stderr)

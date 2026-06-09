@@ -5,7 +5,9 @@
 
 id: ME-2026-001
 title: "Senior Mechanical Design Engineer"
-client: "Confidential Aerospace OEM"
+# REQUIRED — who we are sourcing FOR. Ask/confirm at the start of every search.
+# The engine protects this client (and all active clients) from no-poach.
+client: "Airbus Canada"
 seniority: senior                 # junior | intermediate | senior | lead | principal
 
 # Sector key from engine/reference/target_employers.yaml. When set, the engine

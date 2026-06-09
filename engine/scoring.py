@@ -354,8 +354,13 @@ def score_candidate(cand: CandidateProfile, role: dict, model: dict, reference: 
 
     wow = _wow(model, total, gate_passed, ctx)
 
-    # No-poach: currently employed at an active client (firm-wide).
-    no_poach_hits = current_employer_clients(cand.raw_text, ref_lib.active_client_names(reference))
+    # No-poach: currently employed at an active client (firm-wide) OR at the
+    # hiring client we're sourcing FOR this search.
+    protected = list(ref_lib.active_client_names(reference))
+    hiring_client = role.get("hiring_client") or role.get("client")
+    if hiring_client:
+        protected.append(hiring_client)
+    no_poach_hits = current_employer_clients(cand.raw_text, protected)
     no_poach = {"triggered": bool(no_poach_hits), "companies": no_poach_hits}
 
     all_subs = [r for cat in categories_out.values() for r in cat["subcriteria"].values()]
