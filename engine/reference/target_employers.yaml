@@ -1,0 +1,756 @@
+meta:
+  source: Kollabtek_Clients_Cibles_v5.pptx
+  status: DRAFT
+  note: 'Kollabtek target clients/OEMs by sector. status: client=current, prospect=new target.'
+sectors:
+  defense:
+    label: Défense — Terrestre · Naval · C4ISR · Cyber
+    companies:
+    - name: Bell Textron
+      location: Mirabel, QC
+      province: QC
+      status: client
+    - name: CAE
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Cambli Group
+      location: Québec, QC
+      province: QC
+      status: client
+    - name: Davie Shipbuilding
+      location: Lévis, QC
+      province: QC
+      status: client
+    - name: Esterline-CMC Électronique
+      location: Saint-Laurent, QC
+      province: QC
+      status: client
+    - name: General Dynamics
+      location: Ottawa, ON
+      province: 'ON'
+      status: client
+    - name: Irving Shipbuilding
+      location: Halifax, NS
+      province: ''
+      status: client
+    - name: L3 Harris
+      location: Ottawa, ON
+      province: 'ON'
+      status: client
+    - name: Lockheed Martin
+      location: Montréal / Ottawa
+      province: QC+ON
+      status: client
+    - name: Mack Defense
+      location: Allentown, PA
+      province: ''
+      status: client
+    - name: Marshall Aerospace
+      location: Cambridge, UK
+      province: ''
+      status: client
+    - name: MDA
+      location: Longueuil, QC
+      province: QC
+      status: client
+    - name: Revision Military – Galvion
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Rheinmetall Canada
+      location: Saint-Jean-s-Richelieu
+      province: QC
+      status: client
+    - name: Rolls-Royce Canada
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Roshel
+      location: Oakville, ON
+      province: 'ON'
+      status: client
+    - name: Seaspan Shipyards
+      location: Vancouver, BC
+      province: ''
+      status: client
+    - name: Top Aces
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Allen-Vanguard
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: Babcock Canada
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: Base Camp Connect
+      location: Québec, QC
+      province: QC
+      status: prospect
+    - name: Calian Group
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: Curtiss-Wright / Indal Tech.
+      location: Mississauga, ON
+      province: 'ON'
+      status: prospect
+    - name: GD-OTS Canada
+      location: Repentigny, QC
+      province: QC
+      status: prospect
+    - name: Kongsberg Geospatial
+      location: Kanata, ON
+      province: 'ON'
+      status: prospect
+    - name: Maerospace Corporation
+      location: Waterloo, ON
+      province: 'ON'
+      status: prospect
+    - name: QinetiQ Canada
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: Raytheon Canada
+      location: Ottawa / Waterloo, ON
+      province: 'ON'
+      status: prospect
+    - name: Safran Electronics & Defense CA
+      location: Montréal, QC
+      province: QC
+      status: prospect
+    - name: Serco Canada
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: Thales Canada
+      location: Montréal / Kanata
+      province: QC+ON
+      status: prospect
+    - name: Ultra Intelligence & Comms
+      location: Mont-Royal, QC
+      province: QC
+      status: prospect
+    - name: BMT Canada
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: KNDS Canada
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: Armatec Survivability Corp
+      location: Ontario
+      province: 'ON'
+      status: prospect
+    - name: CMC Electronics
+      location: Montréal, QC
+      province: QC
+      status: prospect
+    - name: ABB Canada
+      location: QC + ON
+      province: QC+ON
+      status: prospect
+    - name: Reaction Dynamics
+      location: Montréal, QC
+      province: QC
+      status: prospect
+    - name: AVSS
+      location: Ontario
+      province: 'ON'
+      status: prospect
+    - name: Arcanus Aerial Systems
+      location: Ontario
+      province: 'ON'
+      status: prospect
+    - name: Dragonfly Systems
+      location: Ontario
+      province: 'ON'
+      status: prospect
+    - name: Axon Technologies
+      location: Ontario
+      province: 'ON'
+      status: prospect
+    - name: SFL Missions
+      location: Ontario
+      province: 'ON'
+      status: prospect
+    - name: Phoenix Testing Labs
+      location: Aurora, ON
+      province: 'ON'
+      status: prospect
+    - name: Rohde & Schwarz Canada
+      location: Ontario
+      province: 'ON'
+      status: prospect
+    - name: C-MAC Microcircuits
+      location: Sherbrooke, QC
+      province: QC
+      status: prospect
+  aeronautique_espace:
+    label: Aéronautique & Espace — OEM · MRO · Composites · NewSpace
+    companies:
+    - name: Agence Spatiale Canadienne
+      location: Longueuil, QC
+      province: QC
+      status: client
+    - name: Air Canada
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Air Transat
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Airbus Canada
+      location: Mirabel, QC
+      province: QC
+      status: client
+    - name: Altitude Aerospace
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Atlas Aerospace
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Avianor
+      location: Mirabel, QC
+      province: QC
+      status: client
+    - name: Bell Hélicoptère
+      location: Mirabel, QC
+      province: QC
+      status: client
+    - name: Beta Technology
+      location: Burlington, VT
+      province: ''
+      status: client
+    - name: Bombardier
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: CAE
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: CEL Aérospace
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: CMC Electronic
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: CS Communication
+      location: Bordeaux, France
+      province: ''
+      status: client
+    - name: DCM Aerospace
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Esterline-CMC Électronique
+      location: Saint-Laurent, QC
+      province: QC
+      status: client
+    - name: F/List
+      location: Österreich (Austria)
+      province: ''
+      status: client
+    - name: Flying Whales
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: GE Aviation
+      location: Bromont, QC
+      province: QC
+      status: client
+    - name: H55
+      location: Sion, Switzerland
+      province: ''
+      status: client
+    - name: Héroux-Devtek
+      location: Longueuil, QC
+      province: QC
+      status: client
+    - name: Hutchinson Aerospace
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: L3 Harris
+      location: Ottawa, ON
+      province: 'ON'
+      status: client
+    - name: Leibherr
+      location: Lindau, Germany
+      province: ''
+      status: client
+    - name: Leesta Industries
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Limosa
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Lockheed Martin
+      location: Montréal / Ottawa
+      province: QC+ON
+      status: client
+    - name: Marmen
+      location: Trois-Rivières, QC
+      province: QC
+      status: client
+    - name: MDA
+      location: Longueuil, QC
+      province: QC
+      status: client
+    - name: Mecachrome
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Meloche
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Mesotec
+      location: Longueuil, QC
+      province: QC
+      status: client
+    - name: MHI RJ
+      location: Mirabel, QC
+      province: QC
+      status: client
+    - name: PCM Innovation
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Pratt & Whitney
+      location: Longueuil, QC
+      province: QC
+      status: client
+    - name: Rockwell Collins
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Safran
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Siemens – Rolls-Royce
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Sky Service
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Sonaca
+      location: Mirabel, QC
+      province: QC
+      status: client
+    - name: STELIA Aerospace
+      location: Mirabel, QC
+      province: QC
+      status: client
+    - name: Thales
+      location: Montréal / Ottawa
+      province: QC+ON
+      status: client
+    - name: Wisk
+      location: Mountain View, CA
+      province: ''
+      status: client
+    - name: Aeroconseil
+      location: Montréal, QC
+      province: QC
+      status: prospect
+    - name: Avior Integrated Products
+      location: Laval, QC
+      province: QC
+      status: prospect
+    - name: Collins Aerospace (RTX CA)
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: Comtek Advanced Structures
+      location: GTA, ON
+      province: 'ON'
+      status: prospect
+    - name: Cyclone Manufacturing
+      location: Mississauga, ON
+      province: 'ON'
+      status: prospect
+    - name: De Havilland / Fleet Canada
+      location: Fort Erie, ON
+      province: 'ON'
+      status: prospect
+    - name: GHGSat
+      location: Montréal, QC
+      province: QC
+      status: prospect
+    - name: Honeywell Aerospace Canada
+      location: Cambridge, ON
+      province: 'ON'
+      status: prospect
+    - name: Innotech-Execaire Aviation
+      location: Dorval / Toronto
+      province: QC+ON
+      status: prospect
+    - name: KF Aerospace
+      location: Hamilton, ON
+      province: 'ON'
+      status: prospect
+    - name: M1 Composites Technology
+      location: Laval, QC
+      province: QC
+      status: prospect
+    - name: Magellan Aerospace
+      location: Mississauga, ON
+      province: 'ON'
+      status: prospect
+    - name: NordSpace
+      location: Markham, ON
+      province: 'ON'
+      status: prospect
+    - name: Premier Aviation
+      location: Trois-Rivières, QC
+      province: QC
+      status: prospect
+    - name: Raytheon ELCAN
+      location: Midland, ON
+      province: 'ON'
+      status: prospect
+    - name: Telesat
+      location: Ottawa, ON
+      province: 'ON'
+      status: prospect
+    - name: Unither Bioélectronique
+      location: Bromont, QC
+      province: QC
+      status: prospect
+  vehicules:
+    label: Véhicules — Transport collectif · Spéciaux · Électromobilité
+    companies:
+    - name: Bathium Canada – Blue Solution
+      location: Boucherville, QC
+      province: QC
+      status: client
+    - name: Boivin EVolution
+      location: St-Joseph-de-Beauce
+      province: QC
+      status: client
+    - name: Bridgestone
+      location: Joliette, QC
+      province: QC
+      status: client
+    - name: BRP
+      location: Valcourt, QC
+      province: QC
+      status: client
+    - name: Dana – TM4
+      location: Boucherville, QC
+      province: QC
+      status: client
+    - name: DBM Reflex
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Demers Ambulances
+      location: Beloeil, QC
+      province: QC
+      status: client
+    - name: Giro
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Grayson
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: IVI Solution
+      location: Laval, QC
+      province: QC
+      status: client
+    - name: Kongsberg Automotive
+      location: Newmarket, ON
+      province: 'ON'
+      status: client
+    - name: La Cie Électrique Lion
+      location: Saint-Jérôme, QC
+      province: QC
+      status: client
+    - name: Labrie Environmental Group
+      location: Saint-Nicolas, QC
+      province: QC
+      status: client
+    - name: Letenda
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Madvac – Exprolink
+      location: St-François-du-Lac
+      province: QC
+      status: client
+    - name: Magna International
+      location: Aurora, ON
+      province: 'ON'
+      status: client
+    - name: Micro Bird-Girardin
+      location: Drummondville, QC
+      province: QC
+      status: client
+    - name: New Flyer
+      location: Winnipeg, MB
+      province: ''
+      status: client
+    - name: Nordresa
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Nova Bus
+      location: Saint-Eustache, QC
+      province: QC
+      status: client
+    - name: NRC
+      location: Ottawa, ON
+      province: 'ON'
+      status: client
+    - name: Paccar
+      location: Sainte-Thérèse, QC
+      province: QC
+      status: client
+    - name: Prevost
+      location: Sainte-Claire, QC
+      province: QC
+      status: client
+    - name: Prinoth
+      location: St-Joseph-de-Beauce
+      province: QC
+      status: client
+    - name: Simard Suspensions
+      location: Saint-Hyacinthe, QC
+      province: QC
+      status: client
+    - name: Soucy International
+      location: Drummondville, QC
+      province: QC
+      status: client
+    - name: Spectra Premium
+      location: Boucherville, QC
+      province: QC
+      status: client
+    - name: STL
+      location: Laval, QC
+      province: QC
+      status: client
+    - name: STM
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: TAIGA Motors
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Telelyft
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Theron
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Thermatech
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Ville de Montréal
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: VR Panoramique
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: ABC Technologies
+      location: Toronto, ON
+      province: 'ON'
+      status: prospect
+    - name: BYD Canada (bus assembly)
+      location: Newmarket, ON
+      province: 'ON'
+      status: prospect
+    - name: Camso / Michelin Off-Road
+      location: Magog, QC
+      province: QC
+      status: prospect
+    - name: Dependable Emergency Vehicles
+      location: Brampton, ON
+      province: 'ON'
+      status: prospect
+    - name: Electrovaya
+      location: Mississauga, ON
+      province: 'ON'
+      status: prospect
+    - name: Hino Motors Canada
+      location: Woodstock, ON
+      province: 'ON'
+      status: prospect
+    - name: Karsan / Damera (e-bus)
+      location: Oakville, ON
+      province: 'ON'
+      status: prospect
+    - name: Linamar (eLIN division)
+      location: Guelph, ON
+      province: 'ON'
+      status: prospect
+    - name: Martinrea International
+      location: Vaughan, ON
+      province: 'ON'
+      status: prospect
+    - name: Motrec International
+      location: Sherbrooke, QC
+      province: QC
+      status: prospect
+    - name: Multimatic
+      location: Markham, ON
+      province: 'ON'
+      status: prospect
+    - name: NextStar Energy (Stellantis JV)
+      location: Windsor, ON
+      province: 'ON'
+      status: prospect
+    - name: REV Fire Group / E-ONE
+      location: Varennes, QC
+      province: QC
+      status: prospect
+    - name: Westport Fuel Systems
+      location: Cambridge, ON
+      province: 'ON'
+      status: prospect
+  ferroviaire:
+    label: Ferroviaire — Opérateurs · OEM · Ingénierie
+    companies:
+    - name: Alstom
+      location: Saint-Bruno, QC
+      province: QC
+      status: client
+    - name: CAD Railway Industriel
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: CN (Systematix)
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: CP Railway
+      location: Calgary, AB
+      province: ''
+      status: client
+    - name: EXO
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Rail GD
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Systra Canada
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Vapor Stone Rail – Wabtec
+      location: Saint-Bruno, QC
+      province: QC
+      status: client
+    - name: Via Rail
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: AECOM Canada
+      location: Montréal / Toronto
+      province: QC+ON
+      status: prospect
+    - name: Alto / Cadence (HSR)
+      location: Corridor QC-ON
+      province: QC+ON
+      status: prospect
+    - name: AtkinsRéalis
+      location: Montréal, QC
+      province: QC
+      status: prospect
+    - name: Davanac
+      location: Montréal, QC
+      province: QC
+      status: prospect
+    - name: Hitachi Rail Canada
+      location: Toronto, ON
+      province: 'ON'
+      status: prospect
+    - name: Keolis Canada
+      location: Montréal / Waterloo
+      province: QC+ON
+      status: prospect
+    - name: Ontario Northland
+      location: North Bay, ON
+      province: 'ON'
+      status: prospect
+    - name: PNR RailWorks
+      location: Delson, QC / GTA, ON
+      province: QC+ON
+      status: prospect
+    - name: Siemens Mobility Canada
+      location: Dorval, QC / Oakville
+      province: QC+ON
+      status: prospect
+    - name: Transdev Canada
+      location: Montréal, QC
+      province: QC
+      status: prospect
+  villes_infrastructure:
+    label: Villes & Infrastructure — Énergie · Recharge EV · Smart Grid · Hydrogène
+    companies:
+    - name: Bornes Québec
+      location: Québec, QC
+      province: QC
+      status: client
+    - name: Calogy
+      location: Québec, QC
+      province: QC
+      status: client
+    - name: EvLo
+      location: Québec, QC
+      province: QC
+      status: client
+    - name: EVT
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Flo
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: GE Vernova
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Hitachi Energy
+      location: Varennes, QC
+      province: QC
+      status: client
+    - name: NorthVolt
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: RVE
+      location: Montréal, QC
+      province: QC
+      status: client
+    - name: Sysnergy
+      location: Montréal, QC
+      province: QC
+      status: client
