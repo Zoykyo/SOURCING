@@ -1,18 +1,25 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# SOURCING — Multi-Criteria Scoring Model  (canonical 5 categories × 5 sub-criteria)
+# SOURCING — Multi-Criteria Scoring Model  (Path 1, evidence-tuned)
+#
+# v0.3 applies the evidence review (docs/MODEL_EVIDENCE_REVIEW.md): re-weighted
+# toward observable quality proxies, weak prestige signals down-weighted, feasibility
+# items turned into GATES, weak distinction signals merged, fairness flags added.
 #
 # This file IS the model. Edit `weight` values to retune scoring.
 #   • Category weights (the 5 `weight:` under each category) must sum to 1.0
-#   • Sub-criteria weights within each category must sum to 1.0
-#   • Effective weight of a sub-criterion = category weight × sub weight
+#   • SCORED sub-criteria weights within each category must sum to 1.0
+#   • `gate: true` sub-criteria are NOT scored/weighted — they are pass/review/unknown
+#     feasibility checks reported separately (weight is ignored; keep it 0.0)
+#   • Effective weight of a scored sub-criterion = category weight × sub weight
 #
 # `scorer:` tells the engine how to compute the sub-score from available data.
 #   • a name  -> implemented now (Phase 0, from resume text)
 #   • null    -> not yet scorable; scored neutral (`no_data_score`) until the
 #                data source in `needs:` is connected (LinkedIn / Zoho / recruiter)
+# `fairness_flag:` surfaces a bias/legal caveat for that signal in the scorecard.
 # ──────────────────────────────────────────────────────────────────────────────
 
-version: 0.2
+version: 0.3
 
 categories:
 
@@ -20,28 +27,29 @@ categories:
   professional_profile:
     label: "1. Professional Profile & Career Trajectory"
     focus: "Career path, progression, experience relevance, professional history."
-    weight: 0.22
+    weight: 0.24
     subcriteria:
       - id: employers_key_oem
-        label: "Employers – Key OEM: list & relevance of companies worked at"
-        weight: 0.3
+        label: "Relevant domain experience — companies/OEMs worked at (relevance, not prestige)"
+        weight: 0.25
         scorer: employers_relevance
+        fairness_flag: "Score on domain RELEVANCE, not employer prestige (prestige weakly predictive + adverse-impact risk)."
       - id: relevant_roles
         label: "Relevant roles & experiences; current title vs. what we're proposing"
-        weight: 0.25
+        weight: 0.3
         scorer: role_relevance
       - id: seniority
         label: "Seniority level vs. what's being sought"
-        weight: 0.2
+        weight: 0.1
         scorer: seniority_match
       - id: career_progression
         label: "Career progression analysis (lateral, hierarchical, interests) vs. what we can offer"
-        weight: 0.15
+        weight: 0.1
         scorer: null
         needs: "structured work-history timeline (LinkedIn / Zoho)"
       - id: subdomain_match
         label: "Sub-domain match"
-        weight: 0.1
+        weight: 0.25
         scorer: null
         needs: "domain/sub-domain taxonomy + enrichment"
 
@@ -49,113 +57,112 @@ categories:
   skills_qualifications:
     label: "2. Skills, Expertise & Qualifications"
     focus: "Capability, technical fit, credentials, match with the opportunity and company."
-    weight: 0.3
+    weight: 0.34
     subcriteria:
       - id: key_competencies
         label: "Key competencies and skills (must-have vs. nice-to-have)"
-        weight: 0.4
+        weight: 0.45
         scorer: key_competencies
       - id: knowledge_standards
         label: "Key knowledge and standards (SAE, ISO, AS9100…)"
-        weight: 0.2
+        weight: 0.25
         scorer: standards_match
       - id: education
         label: "Education, continuing education (courses)"
-        weight: 0.15
+        weight: 0.1
         scorer: education
-      - id: language_proficiency
-        label: "Language proficiency analysis"
-        weight: 0.15
-        scorer: languages_match
+        fairness_flag: "Use degree level / job-relevance only — never school prestige (Title VII adverse-impact risk)."
       - id: associations_certs
         label: "Professional associations, certifications and credentials"
-        weight: 0.1
+        weight: 0.2
         scorer: certifications
+      - id: language_proficiency
+        label: "Language proficiency (role requirement)"
+        weight: 0.0
+        gate: true
+        scorer: languages_match
 
   # ── 3 ────────────────────────────────────────────────────────────────────────
   credibility_distinction:
     label: "3. Credibility, Reputation & Distinction"
     focus: "Distinction, excellence, credibility, reputation."
-    weight: 0.13
+    weight: 0.08
     subcriteria:
-      - id: awards_distinctions
-        label: "Awards, distinctions, scholarships, honors, recognitions, alumni"
-        weight: 0.3
-        scorer: awards
+      - id: publications_patents
+        label: "Publications and patents (work-sample evidence of capability)"
+        weight: 0.45
+        scorer: publications
+      - id: recognition
+        label: "Recognition: awards/honors, demonstrated authority (speaker/panel/committee), competitions"
+        weight: 0.35
+        scorer: recognition
       - id: references_feedback
         label: "References, feedback"
         weight: 0.2
         scorer: null
-        needs: "reference checks / recruiter feedback input"
-      - id: demonstrated_authority
-        label: "Demonstrated expertise or domain authority: speaker, panel, trainer, committees"
-        weight: 0.2
-        scorer: authority
-      - id: competition_studentclub
-        label: "Competition: student club"
-        weight: 0.1
-        scorer: competition
-      - id: publications_patents
-        label: "Publications and patents"
-        weight: 0.2
-        scorer: publications
+        needs: "reference checks / recruiter feedback input (later stage)"
 
   # ── 4 ────────────────────────────────────────────────────────────────────────
   availability_retention:
     label: "4. Availability & Retention Potential"
-    focus: "Likelihood of moving, staying, and being reachable."
-    weight: 0.2
+    focus: "Likelihood of moving (placeability), staying (retention), and being reachable."
+    weight: 0.22
     subcriteria:
-      - id: interest_kollabtek
-        label: "Interest in Kollabtek, clients & sector companies (subscribed, connected, applied before)"
-        weight: 0.2
-        scorer: null
-        needs: "engagement data (LinkedIn follows/applies, Zoho history)"
       - id: open_to_work
-        label: "Open to work or probability of being open to work"
+        label: "Open to work or probability of being open to work (placeability)"
         weight: 0.3
         scorer: open_to_work
+      - id: tenure_windows
+        label: "Tenure windows (current and avg. past) — retention proxy"
+        weight: 0.3
+        scorer: tenure_windows
+        fairness_flag: "Normalize by career stage/age band — raw short tenure double-penalizes early-career and is an ADEA age proxy."
+      - id: interest_kollabtek
+        label: "Interest in Kollabtek, clients & sector companies (engagement signals)"
+        weight: 0.15
+        scorer: null
+        needs: "engagement data (LinkedIn follows/applies, Zoho history)"
+      - id: probability_stay
+        label: "Probability to stay — job-embeddedness proxies (community/location ties, tenure, local roots)"
+        weight: 0.15
+        scorer: null
+        needs: "embeddedness proxies: location/region ties + retention model on past placements"
       - id: contact_analysis
-        label: "Contact analysis (recruiter, Kollabtek team)"
+        label: "Contact analysis (existing relationship, recruiter/Kollabtek team)"
         weight: 0.1
         scorer: null
         needs: "existing relationship / contact-owner data (Zoho)"
-      - id: probability_stay
-        label: "Probabilities to stay at Kollabtek"
-        weight: 0.15
-        scorer: null
-        needs: "retention model on past placements"
-      - id: tenure_windows
-        label: "Tenure windows (current and avg. past)"
-        weight: 0.25
-        scorer: tenure_windows
 
   # ── 5 ────────────────────────────────────────────────────────────────────────
   mobility:
     label: "5. Mobility"
-    focus: "Interest, possibility to relocate and travel."
-    weight: 0.15
+    focus: "Retention via local ties (scored) + feasibility of relocation/travel/work-mode (gates)."
+    weight: 0.12
     subcriteria:
-      - id: interest_relocation
-        label: "Interest in relocation"
-        weight: 0.2
-        scorer: interest_relocation
-      - id: willingness_travel
-        label: "Willingness to travel"
-        weight: 0.15
-        scorer: willingness_travel
       - id: location_proximity
-        label: "Location: proximity to current role"
-        weight: 0.3
+        label: "Location: proximity to role + local ties (embeddedness/retention proxy)"
+        weight: 0.55
         scorer: location_proximity
+        fairness_flag: "Location can carry adverse impact — keep weight modest and justify by job-relatedness."
       - id: region_studies_work
-        label: "Region – past and current studies and work"
-        weight: 0.15
+        label: "Region – past and current studies and work (local-roots / embeddedness proxy)"
+        weight: 0.45
         scorer: null
         needs: "structured study/work region history (LinkedIn / enrichment)"
+      - id: interest_relocation
+        label: "Interest in relocation (feasibility)"
+        weight: 0.0
+        gate: true
+        scorer: interest_relocation
+      - id: willingness_travel
+        label: "Willingness to travel (feasibility)"
+        weight: 0.0
+        gate: true
+        scorer: willingness_travel
       - id: work_mode
-        label: "Work mode: on-site, hybrid, remote"
-        weight: 0.2
+        label: "Work mode: on-site, hybrid, remote (feasibility)"
+        weight: 0.0
+        gate: true
         scorer: work_mode_fit
 
 
@@ -257,6 +264,7 @@ thresholds:
   must_have_gate: 1.0          # fraction of must-haves required to clear the gate
   shortlist_min_score: 60      # below this -> flagged "marginal"
   wow_min_score: 80            # min total to be Wow-eligible
+  gate_pass_score: 60          # gate sub-criterion score at/above this = "pass"
 
 # "A + B + C = Wow!" — rare high-value combination.
 wow_rule:

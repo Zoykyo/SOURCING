@@ -184,6 +184,16 @@ def competition(c: Ctx):
     return _crit(min(100, 60 + 15 * len(hits)), f"Competition signal(s): {', '.join(hits)}")
 
 
+def recognition(c: Ctx):
+    """Merged distinction signal: awards/honors + demonstrated authority + competitions."""
+    hits = (_lex_hits(c.cand.raw_text, c.lex.get("awards", [])) +
+            _lex_hits(c.cand.raw_text, c.lex.get("authority", [])) +
+            _lex_hits(c.cand.raw_text, c.lex.get("competition", [])))
+    if not hits:
+        return _crit(50, "No recognition signals (awards/authority/competition)", "no_data")
+    return _crit(min(100, 40 + 18 * len(hits)), f"{len(hits)} recognition signal(s): {', '.join(hits)}")
+
+
 def open_to_work(c: Ctx):
     if c.cand.open_to_work_signals:
         return _crit(100, f"Openness signal(s): {', '.join(c.cand.open_to_work_signals)}")
@@ -243,6 +253,7 @@ SCORERS = {
     "authority": authority,
     "publications": publications,
     "competition": competition,
+    "recognition": recognition,
     "open_to_work": open_to_work,
     "tenure_windows": tenure_windows,
     "location_proximity": location_proximity,
@@ -267,19 +278,32 @@ def score_candidate(cand: CandidateProfile, role: dict, model: dict) -> dict:
 
     cat_overrides = role.get("category_weights") or {}
     no_data = model["no_data_score"]
+    gate_pass = model["thresholds"].get("gate_pass_score", 60)
+
+    def run_sub(sub):
+        scorer = sub.get("scorer")
+        if scorer and scorer in SCORERS:
+            res = SCORERS[scorer](ctx)
+        else:
+            res = _crit(no_data, f"Not yet scored — needs {sub.get('needs', 'richer data')}", "no_data")
+        res["label"] = sub["label"]
+        res["weight"] = sub.get("weight", 0)
+        res["fairness_flag"] = sub.get("fairness_flag")
+        return res
 
     categories_out = {}
     cat_scores = {}
+    feasibility = []          # gate checks (pass / review / unknown) — not scored
     for cat_id, cat in model["categories"].items():
         subs_out = {}
         for sub in cat["subcriteria"]:
-            scorer = sub.get("scorer")
-            if scorer and scorer in SCORERS:
-                res = SCORERS[scorer](ctx)
-            else:
-                res = _crit(no_data, f"Not yet scored — needs {sub.get('needs', 'richer data')}", "no_data")
-            res["label"] = sub["label"]
-            res["weight"] = sub["weight"]
+            res = run_sub(sub)
+            if sub.get("gate"):
+                status = ("unknown" if res["provenance"] == "no_data"
+                          else "pass" if res["score"] >= gate_pass else "review")
+                feasibility.append({"id": sub["id"], "label": sub["label"],
+                                    "status": status, "evidence": res["evidence"]})
+                continue
             subs_out[sub["id"]] = res
 
         num = sum(r["score"] * r["weight"] for r in subs_out.values())
@@ -316,6 +340,7 @@ def score_candidate(cand: CandidateProfile, role: dict, model: dict) -> dict:
         "total_score": round(total, 1),
         "category_scores": cat_scores,
         "categories": categories_out,
+        "feasibility": feasibility,
         "gate_passed": gate_passed,
         "missing_must_haves": missing_must,
         "wow": wow,

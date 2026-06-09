@@ -112,17 +112,24 @@ def build():
         block_first = r + 1
         for j, sub in enumerate(cat["subcriteria"], start=1):
             r += 1
+            is_gate = bool(sub.get("gate"))
             ws.cell(r, 1, j).font = BODY
             lab = ws.cell(r, 2, sub["label"]); lab.font = BODY; lab.alignment = WRAP; lab.border = BORDER
-            wc = ws.cell(r, 3, round(sub["weight"], 4))
-            wc.fill = EDIT_FILL; wc.font = BODY; wc.number_format = "0.00"; wc.border = BORDER
-            dv.add(wc)
+            wc = ws.cell(r, 3, round(sub.get("weight", 0), 4))
+            wc.font = BODY; wc.number_format = "0.00"; wc.border = BORDER
+            if is_gate:
+                wc.fill = CALC_FILL          # gates are not weighted — not editable
+            else:
+                wc.fill = EDIT_FILL
+                dv.add(wc)
             eff = ws.cell(r, 4, f"=$B${crow}*C{r}*100")
             eff.fill = CALC_FILL; eff.font = BODY; eff.number_format = "0.0"; eff.border = BORDER
             scorable = sub.get("scorer") is not None
-            st = ws.cell(r, 5, "✅ now" if scorable else "⏳ later")
+            st = ws.cell(r, 5, "🚪 gate" if is_gate else ("✅ now" if scorable else "⏳ later"))
             st.alignment = CENTER; st.border = BORDER
-            nd = ws.cell(r, 6, "" if scorable else sub.get("needs", "richer data"))
+            nd_text = ("Feasibility gate — pass/review/unknown, not weighted" if is_gate
+                       else "" if scorable else sub.get("needs", "richer data"))
+            nd = ws.cell(r, 6, nd_text)
             nd.font = ITAL; nd.alignment = WRAP; nd.border = BORDER
         block_last = r
         # subtotal

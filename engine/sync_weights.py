@@ -54,14 +54,14 @@ def validate(model, cat_w, sub_w):
     if abs(tot - 1) > TOL:
         errs.append(f"Category weights sum to {tot:.3f} (must be 1.00)")
     for cid, c in model["categories"].items():
-        ids = [s["id"] for s in c["subcriteria"]]
+        ids = [s["id"] for s in c["subcriteria"] if not s.get("gate")]  # gates aren't weighted
         missing = [i for i in ids if i not in sub_w]
         if missing:
             errs.append(f"[{cid}] missing sub-weights: {missing}")
             continue
         s = sum(sub_w[i] for i in ids)
         if abs(s - 1) > TOL:
-            errs.append(f"[{cid}] sub-weights sum to {s:.3f} (must be 1.00)")
+            errs.append(f"[{cid}] scored sub-weights sum to {s:.3f} (must be 1.00)")
     return errs
 
 
@@ -69,7 +69,7 @@ def normalize(model, cat_w, sub_w):
     tot = sum(cat_w.values()) or 1
     cat_w = {k: v / tot for k, v in cat_w.items()}
     for cid, c in model["categories"].items():
-        ids = [s["id"] for s in c["subcriteria"]]
+        ids = [s["id"] for s in c["subcriteria"] if not s.get("gate")]
         s = sum(sub_w.get(i, 0) for i in ids) or 1
         for i in ids:
             sub_w[i] = sub_w.get(i, 0) / s

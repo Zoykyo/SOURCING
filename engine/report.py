@@ -24,6 +24,15 @@ def scorecard_markdown(result: dict, role: dict) -> str:
         L.append(f"> ⚠️ **Missing must-have(s):** {', '.join(result['missing_must_haves'])}")
         L.append("")
 
+    feas = result.get("feasibility", [])
+    if feas:
+        icon = {"pass": "✅", "review": "⚠️", "unknown": "❔"}
+        L.append("## Feasibility gates _(pass/fail filters — not scored)_")
+        L.append("")
+        for f in feas:
+            L.append(f"- {icon.get(f['status'],'•')} **{f['label']}** — {f['status']}: {f['evidence']}")
+        L.append("")
+
     L.append("## Category breakdown")
     L.append("")
     L.append("| Category | Weight | Score |")
@@ -38,8 +47,9 @@ def scorecard_markdown(result: dict, role: dict) -> str:
         L.append(f"### {cat['label']} — {cat['score']:.0f}/100  _(weight {cat['weight']:.2f})_")
         for sub in cat["subcriteria"].values():
             tag = "" if sub["provenance"] == "explicit" else " _(no data → neutral)_"
+            flag = f"  \n  ⚠️ _{sub['fairness_flag']}_" if sub.get("fairness_flag") else ""
             L.append(f"- **{sub['label']}** _(w {sub['weight']:.2f})_ — "
-                     f"{sub['score']:.0f}: {sub['evidence']}{tag}")
+                     f"{sub['score']:.0f}: {sub['evidence']}{tag}{flag}")
 
     L.append("")
     L.append("---")
